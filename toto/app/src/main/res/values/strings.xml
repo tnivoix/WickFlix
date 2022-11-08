@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">WickFlix</string>
+    <string name="name">John Wick</string>
+    <string name="kill">Kill Counter</string>
+    <string name="money">Money</string>
+    <string name="desc1">Tueur à gage international</string>
+    <string name="desc2">Communément appelé </string>
+    <string name="desc3">Babayaga</string>
+    <string name="desc4">Don\'t touch his dog !</string>
+    <string name="button">Engage</string>
+</resources>
