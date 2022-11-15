@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import toto.isis.fr.Api
+import toto.isis.fr.api.Api
 import toto.isis.fr.models.TmdbTvFull
 
 class SerieViewModelFactory(private val navController: NavController) :

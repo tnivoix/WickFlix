@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -167,3 +168,28 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun dpToSp(dp: Dp) = with(LocalDensity.current) { dp.toSp() }
+
+@Composable
+fun h1(text : String){
+    Text(
+        text = text,
+        fontWeight = FontWeight.Bold,
+        fontSize = dpToSp(30.dp)
+    )
+}
+
+@Composable
+fun h2(text : String){
+    Text(
+        text = text,
+        fontWeight = FontWeight.Bold,
+        fontSize = dpToSp(20.dp)
+    )
+}
+
+sealed class NavItem(var title:String, var icon:Int, var screen_route:String){
+
+    object Films : NavItem("Films", R.drawable.films,"films")
+    object Series: NavItem("Series",R.drawable.series,"series")
+    object Actors: NavItem("Actors",R.drawable.actors,"actors")
+}

@@ -1,4 +1,4 @@
-package toto.isis.fr
+package toto.isis.fr.api
 
 import retrofit2.http.GET
 import retrofit2.http.Path
