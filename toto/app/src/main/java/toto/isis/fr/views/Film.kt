@@ -1,10 +1,9 @@
 package toto.isis.fr
 
 import android.R
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import android.widget.GridLayout
+import android.widget.GridView
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +37,9 @@ fun FilmView(windowClass: WindowSizeClass, filmViewModel: FilmViewModel, filmId:
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(5.dp).fillMaxSize()
+        modifier = Modifier
+            .padding(5.dp)
+            .fillMaxSize()
     ) {
         film?.let {
             item {
@@ -57,31 +58,42 @@ fun FilmView(windowClass: WindowSizeClass, filmViewModel: FilmViewModel, filmId:
             }
             item {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(
-                        text = it.release_date,
-                        color = Color.LightGray
-                    )
-                    var genres = ""
-                    for(genre in it.genres){
-                        genres+=genre.name
-                        if(genre.id!=it.genres.last().id){
-                            genres+=" & "
+                    Column(modifier = Modifier.fillMaxSize(0.5F)) {
+                        Text(
+                            text = "Date de sortie",
+                            color = Color.Gray,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = it.release_date,
+                            color = Color.LightGray
+                        )
+                    }
+                    Column(modifier = Modifier.fillMaxSize(0.5F)) {
+                        Text(
+                            text = "Genres",
+                            fontStyle = FontStyle.Italic,
+                            fontWeight = FontWeight.Bold
+                        )
+                        for(genre in it.genres){
+                            Text(
+                                text = genre.name,
+                                fontStyle = FontStyle.Italic
+                            )
                         }
                     }
-                    Text(
-                        text = genres,
-                        fontStyle = FontStyle.Italic
-                    )
                 }
             }
             item {
                 AsyncImage(
                     model = Api.apiImg + Size.original + it.backdrop_path,
                     contentDescription = it.title,
-                    modifier = Modifier.padding(5.dp).clip(RoundedCornerShape(5.dp))
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .clip(RoundedCornerShape(5.dp))
                 )
             }
             item {
