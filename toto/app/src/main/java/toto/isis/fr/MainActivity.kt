@@ -3,7 +3,10 @@ package toto.isis.fr
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -17,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -29,6 +33,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import coil.compose.AsyncImage
+import toto.isis.fr.api.Api
+import toto.isis.fr.api.Size
 import toto.isis.fr.viewModels.*
 
 
@@ -170,7 +177,7 @@ class MainActivity : ComponentActivity() {
 fun dpToSp(dp: Dp) = with(LocalDensity.current) { dp.toSp() }
 
 @Composable
-fun h1(text : String){
+fun h1(text: String) {
     Text(
         text = text,
         fontWeight = FontWeight.Bold,
@@ -179,7 +186,7 @@ fun h1(text : String){
 }
 
 @Composable
-fun h2(text : String){
+fun h2(text: String) {
     Text(
         text = text,
         fontWeight = FontWeight.Bold,
@@ -187,9 +194,35 @@ fun h2(text : String){
     )
 }
 
-sealed class NavItem(var title:String, var icon:Int, var screen_route:String){
+sealed class NavItem(var title: String, var icon: Int, var screen_route: String) {
 
-    object Films : NavItem("Films", R.drawable.films,"films")
-    object Series: NavItem("Series",R.drawable.series,"series")
-    object Actors: NavItem("Actors",R.drawable.actors,"actors")
+    object Films : NavItem("Films", R.drawable.films, "films")
+    object Series : NavItem("Series", R.drawable.series, "series")
+    object Actors : NavItem("Actors", R.drawable.actors, "actors")
+}
+
+@Composable
+fun GridItem(img: String, text1: String, text2: String, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .padding(5.dp)
+            .border(1.dp, Color.Gray, RoundedCornerShape(5.dp))
+            .clickable { onClick }
+    ) {
+        AsyncImage(
+            model = img,
+            contentDescription = text1,
+            modifier = Modifier.padding(10.dp)
+        )
+        Text(
+            text = text1,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(10.dp, 0.dp)
+        )
+        Text(
+            text = text2,
+            fontStyle = FontStyle.Italic,
+            modifier = Modifier.padding(10.dp, 5.dp)
+        )
+    }
 }

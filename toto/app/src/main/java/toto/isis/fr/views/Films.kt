@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import coil.compose.AsyncImage
+import toto.isis.fr.api.Api
 import toto.isis.fr.api.Api.apiImg
 import toto.isis.fr.api.Size
 import toto.isis.fr.models.TmdbMovieShort
@@ -32,6 +33,8 @@ fun FilmsView(windowClass: WindowSizeClass, filmsViewModel: FilmsViewModel) {
             Button(onClick = { filmsViewModel.moveToFilm(movie.id) }) {
                 Text(text = movie.title)
             }
+            val moveToFilm: () -> Unit = { filmsViewModel.moveToFilm(movie.id)}
+            GridItem(Api.apiImg + Size.w500 + movie.poster_path, movie.title, movie.release_date, moveToFilm)
         }
     }
 }
