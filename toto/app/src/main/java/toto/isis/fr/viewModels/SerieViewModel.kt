@@ -19,7 +19,7 @@ class SerieViewModel(private val navController: NavController) : ViewModel() {
     val serie = MutableStateFlow<TmdbTvFull?>(null)
 
     fun moveToSeries(){
-        navController.navigate("series")
+        navController.popBackStack()
     }
 
     fun getSerie(id : Int){

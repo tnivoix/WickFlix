@@ -19,7 +19,7 @@ class FilmViewModel(private val navController: NavController) : ViewModel() {
     val film = MutableStateFlow<TmdbMovieFull?>(null)
 
     fun moveToFilms(){
-        navController.navigate("films")
+        navController.popBackStack()
     }
 
     fun getFilm(id : Int){

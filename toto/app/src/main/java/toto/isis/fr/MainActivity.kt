@@ -202,23 +202,24 @@ sealed class NavItem(var title: String, var icon: Int, var screen_route: String)
 }
 
 @Composable
-fun GridItem(img: String, text1: String, text2: String, onClick: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .padding(5.dp)
-            .border(1.dp, Color.Gray, RoundedCornerShape(5.dp))
-            .clickable { onClick }
-    ) {
+fun GridItem(img: String, text1: String, text2: String = "") {
+    val padd = if (text2 == "")
+        5.dp
+    else
+        0.dp
+    if (img != "") {
         AsyncImage(
             model = img,
             contentDescription = text1,
             modifier = Modifier.padding(10.dp)
         )
-        Text(
-            text = text1,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(10.dp, 0.dp)
-        )
+    }
+    Text(
+        text = text1,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(10.dp, 0.dp, 10.dp, padd)
+    )
+    if (text2 != "") {
         Text(
             text = text2,
             fontStyle = FontStyle.Italic,
@@ -226,3 +227,4 @@ fun GridItem(img: String, text1: String, text2: String, onClick: () -> Unit) {
         )
     }
 }
+
