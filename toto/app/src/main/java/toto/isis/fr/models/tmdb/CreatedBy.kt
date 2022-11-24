@@ -1,4 +1,4 @@
-package toto.isis.fr.models
+package toto.isis.fr.models.tmdb
 
 data class CreatedBy(
     val credit_id: String,

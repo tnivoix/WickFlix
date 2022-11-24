@@ -1,8 +1,7 @@
-package toto.isis.fr.models
+package toto.isis.fr.models.tmdb
 
-data class CastMovie(
+data class CastTv(
     val adult: Boolean,
-    val cast_id: Int,
     val character: String,
     val credit_id: String,
     val gender: Int,

@@ -4,6 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import toto.isis.fr.models.*
+import toto.isis.fr.models.tmdb.*
 
 interface TmdbApi {
 

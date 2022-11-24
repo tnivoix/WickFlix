@@ -7,29 +7,30 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import toto.isis.fr.api.Api
-import toto.isis.fr.models.TmdbMovieShort
+import toto.isis.fr.models.template.TemplateCast
+import toto.isis.fr.models.template.TemplateShort
+import toto.isis.fr.models.tmdb.TmdbMovieShort
 
 class FilmsViewModelFactory(private val navController: NavController) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = FilmsViewModel(navController) as T
 }
 
-class FilmsViewModel(private val navController: NavController) : ViewModel() {
+class FilmsViewModel(private val navController: NavController) : ListViewModel(navController) {
 
-    val movies = MutableStateFlow<List<TmdbMovieShort>>(listOf())
-
-    fun moveToHome(){
-        navController.navigate("profil")
+    override fun moveToDetail(detailId : Int){
+        navController.navigate("film/"+detailId.toString())
     }
 
-    fun moveToFilm(filmId : Int){
-        navController.navigate("film/"+filmId.toString())
-    }
-
-    fun getMovies(){
+    override fun getList(){
         viewModelScope.launch {
             val moviesResults = Api.service.lastMovies()
-            movies.value = moviesResults.results
+            val films = mutableListOf<TemplateShort>()
+            for(film in moviesResults.results){
+                val tmplFilm = TemplateShort(film.id,film.title,film.poster_path,film.release_date)
+                films.add(tmplFilm)
+            }
+            list.value = films
         }
     }
 }

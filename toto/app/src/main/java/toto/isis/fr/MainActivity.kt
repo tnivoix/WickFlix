@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -34,8 +33,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.AsyncImage
-import toto.isis.fr.api.Api
-import toto.isis.fr.api.Size
 import toto.isis.fr.viewModels.*
 
 
@@ -95,21 +92,21 @@ class MainActivity : ComponentActivity() {
                 ProfilView(windowSizeClass, profilViewModel)
             }
             composable("films") {
-                FilmsView(windowSizeClass, filmsViewModel)
+                ListView(windowSizeClass, filmsViewModel as ListViewModel, "Films")
             }
             composable("series") {
-                SeriesView(windowSizeClass, seriesViewModel)
+                ListView(windowSizeClass, seriesViewModel as ListViewModel, "Series")
             }
             composable("actors") {
-                ActorsView(windowSizeClass, actorsViewModel)
+                ListView(windowSizeClass, actorsViewModel as ListViewModel, "Actors")
             }
             composable(
                 "film/{filmId}",
                 arguments = listOf(navArgument("filmId") { type = NavType.IntType })
             ) { backStackEntry ->
-                FilmView(
+                DetailView(
                     windowSizeClass,
-                    filmViewModel,
+                    filmViewModel as DetailViewModel,
                     backStackEntry.arguments?.getInt("filmId")
                 )
             }
@@ -117,9 +114,9 @@ class MainActivity : ComponentActivity() {
                 "serie/{serieId}",
                 arguments = listOf(navArgument("serieId") { type = NavType.IntType })
             ) { backStackEntry ->
-                SerieView(
+                DetailView(
                     windowSizeClass,
-                    serieViewModel,
+                    serieViewModel as DetailViewModel,
                     backStackEntry.arguments?.getInt("serieId")
                 )
             }
@@ -201,30 +198,6 @@ sealed class NavItem(var title: String, var icon: Int, var screen_route: String)
     object Actors : NavItem("Actors", R.drawable.actors, "actors")
 }
 
-@Composable
-fun GridItem(img: String, text1: String, text2: String = "") {
-    val padd = if (text2 == "")
-        5.dp
-    else
-        0.dp
-    if (img != "") {
-        AsyncImage(
-            model = img,
-            contentDescription = text1,
-            modifier = Modifier.padding(10.dp)
-        )
-    }
-    Text(
-        text = text1,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(10.dp, 0.dp, 10.dp, padd)
-    )
-    if (text2 != "") {
-        Text(
-            text = text2,
-            fontStyle = FontStyle.Italic,
-            modifier = Modifier.padding(10.dp, 5.dp)
-        )
-    }
-}
-
+val gridModifier = Modifier
+    .padding(5.dp)
+    .border(1.dp, Color.Gray, RoundedCornerShape(5.dp))

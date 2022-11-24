@@ -1,4 +1,4 @@
-package toto.isis.fr.models
+package toto.isis.fr.models.tmdb
 
 data class BelongsToCollection(
     val backdrop_path: String,

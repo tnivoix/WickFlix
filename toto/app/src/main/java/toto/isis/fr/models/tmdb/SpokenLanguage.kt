@@ -1,4 +1,4 @@
-package toto.isis.fr.models
+package toto.isis.fr.models.tmdb
 
 data class SpokenLanguage(
     val english_name: String,

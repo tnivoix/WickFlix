@@ -1,6 +1,4 @@
-package toto.isis.fr.models
-
-import java.lang.reflect.Constructor
+package toto.isis.fr.models.tmdb
 
 data class TmdbTvFull(
     val adult: Boolean,
@@ -18,7 +16,7 @@ data class TmdbTvFull(
     val last_episode_to_air: LastEpisodeToAir,
     val name: String,
     val networks: List<Network>,
-    val next_episode_to_air: Any,//""
+    val next_episode_to_air: Any,
     val number_of_episodes: Int,
     val number_of_seasons: Int,
     val origin_country: List<String>,

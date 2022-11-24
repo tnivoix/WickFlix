@@ -22,15 +22,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import toto.isis.fr.api.Api
 import toto.isis.fr.api.Size
-import toto.isis.fr.models.Genre
-import toto.isis.fr.viewModels.FilmViewModel
+import toto.isis.fr.models.tmdb.Genre
+import toto.isis.fr.viewModels.DetailViewModel
 
 @Composable
-fun FilmView(windowClass: WindowSizeClass, filmViewModel: FilmViewModel, filmId: Int?) {
+fun DetailView(windowClass: WindowSizeClass, detailViewModel: DetailViewModel, detailId: Int?) {
 
-    val film by filmViewModel.film.collectAsState()
-    if (filmId != null) {
-        filmViewModel.getFilm(filmId)
+    val detail by detailViewModel.detail.collectAsState()
+    if (detailId != null) {
+        detailViewModel.getDetail(detailId)
     }
 
     LazyVerticalGrid(
@@ -39,12 +39,12 @@ fun FilmView(windowClass: WindowSizeClass, filmViewModel: FilmViewModel, filmId:
             .padding(5.dp)
             .fillMaxSize()
     ) {
-        film?.let {
+        detail?.let {
             item(span = { GridItemSpan(2) }) {
-                Title1(text = it.title)
+                Title1(text = it.name)
             }
             item(span = { GridItemSpan(2) }) {
-                Poster(img = it.poster_path, title = it.title)
+                Poster(img = it.poster_path, title = it.name)
             }
             item {
                 ReleaseDate(releaseDate = it.release_date)
@@ -53,7 +53,7 @@ fun FilmView(windowClass: WindowSizeClass, filmViewModel: FilmViewModel, filmId:
                 Genres(genres = it.genres)
             }
             item(span = { GridItemSpan(2) }) {
-                BackDrop(img = it.backdrop_path, title = it.title)
+                BackDrop(img = it.backdrop_path, title = it.name)
             }
             item(span = { GridItemSpan(2) }) {
                 Synopsis(synopsis = it.overview)
@@ -61,13 +61,16 @@ fun FilmView(windowClass: WindowSizeClass, filmViewModel: FilmViewModel, filmId:
             item(span = { GridItemSpan(2) }) {
                 Title2(text = "Casting")
             }
-            items(it.credits.cast) { actor ->
-                Casting(img = actor.profile_path, text1 = actor.name, text2 = actor.character)
+            items(it.casting) { actor ->
+                GridItem(
+                    img = actor.profile_path.toString(),
+                    text1 = actor.name,
+                    text2 = actor.character,
+                    gridModifier
+                )
             }
             item(span = { GridItemSpan(2) }) {
-                Button(onClick = { filmViewModel.moveToFilms() }) {
-                    Text(text = "Retour")
-                }
+                BackButton(detailViewModel)
             }
         }
     }
@@ -165,25 +168,8 @@ fun Synopsis(synopsis: String) {
 }
 
 @Composable
-fun Casting(img: String = "", text1: String, text2: String = "") {
-    val image = if (img == "")
-        ""
-    else
-        Api.apiImg + Size.w500 + img
-    Column(
-        modifier = Modifier
-            .padding(5.dp)
-            .border(1.dp, Color.Gray, RoundedCornerShape(5.dp))
-    ) {
-        GridItem(
-            img = image,
-            text1 = text1,
-            text2 = text2
-        )
+fun BackButton(viewModel: DetailViewModel) {
+    Button(onClick = { viewModel.moveBack() }) {
+        Text(text = "Retour")
     }
-}
-
-@Composable
-fun BackButton() {
-
 }

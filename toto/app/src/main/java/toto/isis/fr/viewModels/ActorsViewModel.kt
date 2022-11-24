@@ -7,25 +7,26 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import toto.isis.fr.api.Api
-import toto.isis.fr.models.TmdbPersonShort
+import toto.isis.fr.models.template.TemplateShort
+import toto.isis.fr.models.tmdb.TmdbPersonShort
 
 class ActorsViewModelFactory(private val navController: NavController) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = ActorsViewModel(navController) as T
 }
 
-class ActorsViewModel(private val navController: NavController) : ViewModel() {
+class ActorsViewModel(private val navController: NavController) : ListViewModel(navController) {
 
-    val actors = MutableStateFlow<List<TmdbPersonShort>>(listOf())
-
-    fun moveToHome(){
-        navController.navigate("profil")
-    }
-
-    fun getActors(){
+    override fun getList(){
         viewModelScope.launch {
             val actorsResults = Api.service.lastActors()
-            actors.value = actorsResults.results
+            val actors = mutableListOf<TemplateShort>()
+            for(actor in actorsResults.results){
+
+                val tmplActor = TemplateShort(actor.id,actor.name,actor.profile_path,"")
+                actors.add(tmplActor)
+            }
+            list.value = actors
         }
     }
 }

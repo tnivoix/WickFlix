@@ -7,29 +7,29 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import toto.isis.fr.api.Api
-import toto.isis.fr.models.TmdbTvShort
+import toto.isis.fr.models.template.TemplateShort
+import toto.isis.fr.models.tmdb.TmdbTvShort
 
 class SeriesViewModelFactory(private val navController: NavController) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = SeriesViewModel(navController) as T
 }
 
-class SeriesViewModel(private val navController: NavController) : ViewModel() {
+class SeriesViewModel(private val navController: NavController) : ListViewModel(navController) {
 
-    val series = MutableStateFlow<List<TmdbTvShort>>(listOf())
-
-    fun moveToHome(){
-        navController.navigate("profil")
+    override fun moveToDetail(detailId : Int){
+        navController.navigate("serie/"+detailId.toString())
     }
 
-    fun moveToSerie(serieId : Int){
-        navController.navigate("serie/"+serieId.toString())
-    }
-
-    fun getSeries(){
+    override fun getList(){
         viewModelScope.launch {
             val seriesResults = Api.service.lastSeries()
-            series.value = seriesResults.results
+            val series = mutableListOf<TemplateShort>()
+            for(serie in seriesResults.results){
+                val tmplSerie = TemplateShort(serie.id,serie.name,serie.poster_path,serie.first_air_date)
+                series.add(tmplSerie)
+            }
+            list.value = series
         }
     }
 }
