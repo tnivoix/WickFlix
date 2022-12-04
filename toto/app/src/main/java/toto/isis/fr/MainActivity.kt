@@ -188,11 +188,6 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
-
-        @Composable
-        fun SideNavigation(navController: NavController){
-            Navigation
-        }
     }
 
     @Composable
