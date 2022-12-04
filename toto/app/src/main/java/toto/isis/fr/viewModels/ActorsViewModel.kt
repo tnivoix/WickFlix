@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import toto.isis.fr.api.Api
 import toto.isis.fr.models.template.TemplateShort
+import toto.isis.fr.models.tmdb.TmdbPersonResult
 import toto.isis.fr.models.tmdb.TmdbPersonShort
 
 class ActorsViewModelFactory(private val navController: NavController) :
@@ -20,13 +21,24 @@ class ActorsViewModel(private val navController: NavController) : ListViewModel(
     override fun getList(){
         viewModelScope.launch {
             val actorsResults = Api.service.lastActors()
-            val actors = mutableListOf<TemplateShort>()
-            for(actor in actorsResults.results){
-
-                val tmplActor = TemplateShort(actor.id,actor.name,actor.profile_path,"")
-                actors.add(tmplActor)
-            }
-            list.value = actors
+            toApiToApp(actorsResults)
         }
+    }
+
+    override fun search(search: String) {
+        viewModelScope.launch {
+            val actorsResults = Api.service.searchActors(query = search)
+            toApiToApp(actorsResults)
+        }
+    }
+
+    fun toApiToApp(result: TmdbPersonResult){
+        val actors = mutableListOf<TemplateShort>()
+        for(actor in result.results){
+
+            val tmplActor = TemplateShort(actor.id,actor.name,actor.profile_path,"")
+            actors.add(tmplActor)
+        }
+        list.value = actors
     }
 }

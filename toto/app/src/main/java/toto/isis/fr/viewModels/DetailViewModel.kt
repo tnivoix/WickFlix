@@ -5,11 +5,11 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import toto.isis.fr.models.template.TemplateFull
 
-open class DetailViewModel(private val navController: NavController) : ViewModel()  {
+open class DetailViewModel(private val navController: NavController) : MyViewModel(navController)  {
 
     val detail = MutableStateFlow<TemplateFull?>(null)
 
-    fun moveBack(){
+    override fun moveBack(){
         navController.popBackStack()
     }
 

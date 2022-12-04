@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import toto.isis.fr.api.Api
 import toto.isis.fr.models.template.TemplateShort
+import toto.isis.fr.models.tmdb.TmdbTvResult
 import toto.isis.fr.models.tmdb.TmdbTvShort
 
 class SeriesViewModelFactory(private val navController: NavController) :
@@ -24,12 +25,23 @@ class SeriesViewModel(private val navController: NavController) : ListViewModel(
     override fun getList(){
         viewModelScope.launch {
             val seriesResults = Api.service.lastSeries()
-            val series = mutableListOf<TemplateShort>()
-            for(serie in seriesResults.results){
-                val tmplSerie = TemplateShort(serie.id,serie.name,serie.poster_path,serie.first_air_date)
-                series.add(tmplSerie)
-            }
-            list.value = series
+            fromApiToApp(seriesResults)
         }
+    }
+
+    override fun search(search: String) {
+        viewModelScope.launch {
+            val seriesResults = Api.service.searchSeries(query = search)
+            fromApiToApp(seriesResults)
+        }
+    }
+
+    fun fromApiToApp(result: TmdbTvResult){
+        val series = mutableListOf<TemplateShort>()
+        for(serie in result.results){
+            val tmplSerie = TemplateShort(serie.id,serie.name,serie.poster_path,serie.first_air_date)
+            series.add(tmplSerie)
+        }
+        list.value = series
     }
 }

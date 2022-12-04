@@ -34,12 +34,6 @@ fun ListView(windowClass: WindowSizeClass, listViewModel: ListViewModel, type : 
             .padding(5.dp)
             .fillMaxSize()
     ) {
-        item {
-            TitleList(text = type)
-        }
-        item {
-            ButtonHome(listViewModel = listViewModel)
-        }
         items(list) { item ->
             var modifier = gridModifier
             if (type != "Actors")
@@ -63,7 +57,7 @@ fun TitleList(text: String) {
 
 @Composable
 fun ButtonHome(listViewModel: ListViewModel) {
-    Button(onClick = { listViewModel.moveToHome() }) {
+    Button(onClick = { listViewModel.moveHome() }) {
         Text(text = "Home")
     }
 }

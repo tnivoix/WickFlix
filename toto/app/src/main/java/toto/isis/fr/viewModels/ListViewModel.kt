@@ -3,19 +3,18 @@ package toto.isis.fr.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
-import toto.isis.fr.models.template.TemplateFull
 import toto.isis.fr.models.template.TemplateShort
-import toto.isis.fr.models.tmdb.TmdbMovieShort
 
-open class ListViewModel(private val navController: NavController) : ViewModel()  {
+open class ListViewModel(private val navController: NavController) : MyViewModel(navController) {
 
     val list = MutableStateFlow<List<TemplateShort>>(listOf())
 
-    fun moveToHome(){
+    override fun moveBack() {
         navController.navigate("profil")
     }
 
-    open fun moveToDetail(detailId : Int){}
+    open fun search(search: String) {}
+    open fun moveToDetail(detailId: Int) {}
 
-    open fun getList(){}
+    open fun getList() {}
 }

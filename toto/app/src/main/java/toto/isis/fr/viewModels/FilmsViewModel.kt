@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import toto.isis.fr.api.Api
 import toto.isis.fr.models.template.TemplateCast
 import toto.isis.fr.models.template.TemplateShort
+import toto.isis.fr.models.tmdb.TmdbMovieResult
 import toto.isis.fr.models.tmdb.TmdbMovieShort
 
 class FilmsViewModelFactory(private val navController: NavController) :
@@ -25,12 +26,23 @@ class FilmsViewModel(private val navController: NavController) : ListViewModel(n
     override fun getList(){
         viewModelScope.launch {
             val moviesResults = Api.service.lastMovies()
-            val films = mutableListOf<TemplateShort>()
-            for(film in moviesResults.results){
-                val tmplFilm = TemplateShort(film.id,film.title,film.poster_path,film.release_date)
-                films.add(tmplFilm)
-            }
-            list.value = films
+            fromApiToApp(moviesResults)
         }
+    }
+
+    override fun search(search: String) {
+        viewModelScope.launch {
+            val moviesResults = Api.service.searchMovies(query = search)
+            fromApiToApp(moviesResults)
+        }
+    }
+
+    fun fromApiToApp(result : TmdbMovieResult) {
+        val films = mutableListOf<TemplateShort>()
+        for(film in result.results){
+            val tmplFilm = TemplateShort(film.id,film.title,film.poster_path,film.release_date)
+            films.add(tmplFilm)
+        }
+        list.value = films
     }
 }
